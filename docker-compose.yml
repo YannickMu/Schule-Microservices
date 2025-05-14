@@ -1,11 +1,22 @@
 services:
   webapi:
     build: ./WebApi
+    depends_on:
+      mongodb: 
+        condition: service_healthy
     ports:
       - "80:5001"
+    environment:
+      - DatabaseSettings__ConnectionString=mongodb://gbs:geheim@mongodb:27017
+    
   mongodb:
     image: mongo
     restart: always
+    healthcheck:
+      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
     volumes:
       - mongodb:/data/db
     ports:
