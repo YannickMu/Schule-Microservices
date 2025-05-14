@@ -3,3 +3,16 @@ services:
     build: ./WebApi
     ports:
       - "80:5001"
+  mongodb:
+    image: mongo
+    restart: always
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: gbs
+      MONGO_INITDB_ROOT_PASSWORD: geheim
+      
+volumes:
+  mongodb: {}
