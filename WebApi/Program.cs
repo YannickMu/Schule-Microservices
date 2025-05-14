@@ -14,13 +14,9 @@ app.MapGet("/check", async (Microsoft.Extensions.Options.IOptions<DatabaseSettin
     {
         var mongoClient = new MongoClient(options.Value.ConnectionString);
         var databases = await mongoClient.ListDatabaseNamesAsync();
-        var databaseNames = await databases.ToListAsync();
-        string responseString = "MongoDB connection ok: ";
-        foreach (var db in databaseNames)
-        {
-            responseString += db + ", ";
-        }
-        return responseString.Remove(responseString.Length - 2);
+        List<string> databaseNames = await databases.ToListAsync();
+        string responseString = "MongoDB connection ok: " + string.Join(", ", databaseNames);
+        return responseString;
     }
     catch (Exception ex)
     {
